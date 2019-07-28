@@ -1,0 +1,3 @@
+# Git Ignore, don't push pycache folder
+
+__pycache__/
