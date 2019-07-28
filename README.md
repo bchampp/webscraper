@@ -3,11 +3,11 @@
 ## Dependencies 
 - Beautiful Soup 
 - Anaconda
-- Panda
+- minidom 
 
 ## Folder Tree
 ````
-* Insert tree *
+* Insert folder tree *
 ````
 
 ## Getting started
