@@ -3,20 +3,26 @@
 ## Dependencies 
 - Beautiful Soup 
 - Anaconda
+- Panda
 
-## What's inside of this project so far
-- testing.py
-    - This is where you should work to figure out how to parse certain pages and play around. This is your testing file!
-- webscraper.py
-    - This is where you should put good working code -> This will be the final program file so keep it always working!
-- savewepage.py
-    - This is a file which prompts you to enter a url and filename, and then saves the raw html code in a file for you to reference
+## Folder Tree
+````
+* Insert tree *
+````
 
-# Using Git Properly :) 
+## Getting started
+Navigate to src folder
+````
+cd src 
+````
 
-- Four commands
-    - git add <files to add>
-    - git commit -m "Some message"
-    - git push
-    - git pull
-    - git stash (for when things break) 
+````
+python main.py
+````
+
+Make sure that the version of python is anaconda3/bin/python
+
+You can check this with 
+````
+which python
+````
