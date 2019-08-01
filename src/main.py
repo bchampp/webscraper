@@ -11,12 +11,30 @@ from datetime import date
 # Build routines for the rest of the beers
 # Fill in req'd file paths for functions
 # 
-def main():
-    url = openURLs()
-    soup = func.URLToSoup(url) # Convert to BeautifuLSoup
-    thornBuryVillage(soup) # Thornbury Village Routine
 
-def thornBuryVillage(soup):
+def main():
+    workbook = xlsxwriter.Workbook("../resources/logs/" + str(getWorkbookName())) # Create New Workbook with Datestamped Name
+
+    urlList = textToList('urlList.txt') # Open urlList.txt file and create a list of the URLs
+    nameList = textToList('sheetNames.txt') # Open sheetNames.txt file and create a list of names
+    counter = 0 # Counter for the URL Loop
+
+    for url in urlList: # Loop through all the URL's
+        if counter != 1:
+            soup = URLToSoup(url) # Convert to BeautifuLSoup
+            name = str(nameList[counter])
+            print("Starting " + name)
+            worksheet = workbook.add_worksheet(name)
+            scrapeToWorksheet(soup, worksheet) # Thornbury Village Routine
+            print("Completed " + name)
+        if counter == 1: # Waterloo pilsner no link
+            print("No link for this beer :(")
+        counter += 1
+        print()
+    workbook.close()
+    print("Program finished succesfully!")
+
+def scrapeToWorksheet(soup, worksheet):
     script = soup.find_all('script') # Find all the script tags
     inventoryScript = script[-1] # The info we want is the last element, access with -1
     func.saveTextToFile(inventoryScript) # Save it to a text file
@@ -25,15 +43,8 @@ def thornBuryVillage(soup):
     result = text.split('var') # Split the file by 'var', all of our contents will be in the first element
     
     listOfStores = result[1].split('{') # Now we split this var into the list of stores with "{"
-    #print(listOfStores)
-
+    
     cleanListOfStores = func.cleanStores(listOfStores)
-    # print(cleanListOfStores)
-    today = date.today()
-    workbookName = str(today) + '.xlsx'
-
-    workbook = xlsxwriter.Workbook(workbookName)
-    worksheet = workbook.add_worksheet('Thornbury Village No.26 Pilsner')
     worksheet.write('A1', 'City')
     worksheet.write('B1', 'Inventory')
     worksheet.write('C1', 'Store ID')
@@ -57,20 +68,23 @@ def thornBuryVillage(soup):
                 cityCellCounter += 1
                 cityCellName = 'A' + str(cityCellCounter)
                 cityCellContents = test[string+1].strip()
+                cityCellContents = cityCellContents.strip('"')
+                cityCellContents = cityCellContents.lower()
+                cityCellContents = cityCellContents.capitalize()
                 worksheet.write(cityCellName, cityCellContents)
-                print("City: " + test[string+1].strip())
+                #print("City: " + test[string+1].strip())
 
             elif(test[string].strip() == 'inventory'):
                 blah = test[string+1].split(" " )
                 blah = blah[0].replace("Math.floor(" "", "")
                 blah = blah.lstrip('\"')
                 test = blah.split('"')
-                print("Inventory: " + test[0])
+                #print("Inventory: " + test[0])
                 inventoryCellContents = str(test[0])
                 inventoryCellCounter += 1
                 inventoryCellName = 'B' + str(inventoryCellCounter)
                 worksheet.write(inventoryCellName, inventoryCellContents)
-                print("--------------")
+                # print("--------------")
                 #print("inventory: " + test[string+1].strip().replace("inventoryMath.floor", ""))
             elif(test[string].strip() == 'uniqueId'):
                 IDContents = test[string+1].strip()
@@ -79,15 +93,13 @@ def thornBuryVillage(soup):
                 IDCounter += 1
                 IDName = 'C' + str(IDCounter)
                 worksheet.write(IDName, IDContents)
-                print("unique ID: " + test[string+1].strip())
-    workbook.close()
-    
-def openURLs():
-    f = open("urlList.txt", "r")
-    url = f.read()
-    f.close()
-    return url
-
+                #print("unique ID: " + test[string+1].strip())
+ 
+def textToList(filename):
+    with open(filename, 'r') as file:
+        urlList = file.readlines()
+    file.close()
+    return urlList
 
 def getStoreEntries(storeList):
     entries = []
@@ -113,6 +125,11 @@ def URLToSoup(url):
     page.close() # Close the webpage
     return soup(html, 'html.parser') # Parse the raw HTML code with the soup() function and return
 
+def getWorkbookName():
+    today = date.today()
+    workbookName = str(today) + '.xlsx'
+    return workbookName
+
 def saveTextToFile(text):
     filename = "test"
     # filename = input("Filename: ")
@@ -128,11 +145,6 @@ def saveHTMLToFile(url):
     file = open(filename, "w+")
     file.write(soup.prettify())
     file.close()
-
-
-def read_URL_list():
-    list = {}
-    return list
 
 def cleanStores(listOfStores):
 #print(listOfStores)
