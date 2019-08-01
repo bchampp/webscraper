@@ -83,7 +83,7 @@ def thornBuryVillage(soup):
     workbook.close()
     
 def openURLs():
-    f = open("resources/urlList.txt", "r")
+    f = open("urlList.txt", "r")
     url = f.read()
     f.close()
     return url
