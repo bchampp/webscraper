@@ -1,4 +1,4 @@
-# LCBO Scraper
+# LCBO webscraper
 
 This is a python webscraper which collects inventory data for products on the LCBO website and logs to an excel sheet. 
 
@@ -8,7 +8,6 @@ This is a python webscraper which collects inventory data for products on the LC
 The python downloads page can be found [here](https://www.python.org/downloads/).
 
 ## Dependencies 
-- Python 3.6+
 - Beautiful Soup 
 - Xlsxwriter
 - XML Dom
