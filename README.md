@@ -1,6 +1,11 @@
 # LCBO Scraper
 
-This is a python webscraper which collects inventory data for products on the LCBO website and logs to an excel sheet
+This is a python webscraper which collects inventory data for products on the LCBO website and logs to an excel sheet. 
+
+## Software Requirements
+- Python 3.6+
+
+The python downloads page can be found [here](https://www.python.org/downloads/).
 
 ## Dependencies 
 - Python 3.6+
@@ -15,18 +20,8 @@ python -m pip install -r requirements.txt
 ````
 
 ## Running the program
-Navigate to src folder
-````
-cd src 
-````
-
+If all dependencies are installed properly, you should be able to run: 
 ````
 python main.py
 ````
 
-Make sure that the version of python is anaconda3/bin/python
-
-You can check this with 
-````
-which python
-````
