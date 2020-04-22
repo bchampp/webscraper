@@ -13,6 +13,9 @@ The python downloads page can be found [here](https://www.python.org/downloads/)
 - XML Dom
 - URLLib
 
+## Getting Started
+First, navigate to the top-level folder of this project in the command prompt. This can be done by typing 'cmd' in the address bar of the file explorer. 
+
 To install the dependencies using pip: 
 ````
 python -m pip install -r requirements.txt
