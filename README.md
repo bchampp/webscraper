@@ -1,16 +1,20 @@
-# LCBO-Webscraper
+# LCBO Scraper
+
+This is a python webscraper which collects inventory data for products on the LCBO website and logs to an excel sheet
 
 ## Dependencies 
+- Python 3.6+
 - Beautiful Soup 
-- Anaconda
-- minidom 
+- Xlsxwriter
+- XML Dom
+- URLLib
 
-## Folder Tree
+To install the dependencies using pip: 
 ````
-* Insert folder tree *
+python -m pip install -r requirements.txt
 ````
 
-## Getting started
+## Running the program
 Navigate to src folder
 ````
 cd src 

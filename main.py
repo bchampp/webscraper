@@ -2,33 +2,23 @@ from urllib.request import urlopen as uReq # Import Module to get data contents 
 from bs4 import BeautifulSoup as soup # Webscraping library
 from xml.dom import minidom # XML File Stuff
 import xlsxwriter # Library to generate excel sheets
-import helper as func # Import library of custom webscraping functions
+# import helper as func # Import library of custom webscraping functions
 from datetime import date
 
-# TODO
-# Move functions to various helper files with good structure 
-# Add doxy commenting for functions
-# Build routines for the rest of the beers
-# Fill in req'd file paths for functions
-# 
-
 def main():
-    workbook = xlsxwriter.Workbook("../resources/logs/" + str(getWorkbookName())) # Create New Workbook with Datestamped Name
+    workbook = xlsxwriter.Workbook("resources/logs/" + str(getWorkbookName())) # Create New Workbook with Datestamped Name
 
-    urlList = textToList('urlList.txt') # Open urlList.txt file and create a list of the URLs
-    nameList = textToList('sheetNames.txt') # Open sheetNames.txt file and create a list of names
+    urlList = textToList('resources/urlList.txt') # Open urlList.txt file and create a list of the URLs
+    nameList = textToList('resources/sheetNames.txt') # Open sheetNames.txt file and create a list of names
     counter = 0 # Counter for the URL Loop
 
     for url in urlList: # Loop through all the URL's
-        if counter != 1:
-            soup = URLToSoup(url) # Convert to BeautifuLSoup
-            name = str(nameList[counter])
-            print("Starting " + name)
-            worksheet = workbook.add_worksheet(name)
-            scrapeToWorksheet(soup, worksheet) # Thornbury Village Routine
-            print("Completed " + name)
-        if counter == 1: # Waterloo pilsner no link
-            print("No link for this beer :(")
+        soup = URLToSoup(url) # Convert to BeautifuLSoup
+        name = str(nameList[counter])
+        print("Starting " + name)
+        worksheet = workbook.add_worksheet(name)
+        scrapeToWorksheet(soup, worksheet) # Thornbury Village Routine
+        print("Completed " + name)
         counter += 1
         print()
     workbook.close()
@@ -37,14 +27,14 @@ def main():
 def scrapeToWorksheet(soup, worksheet):
     script = soup.find_all('script') # Find all the script tags
     inventoryScript = script[-1] # The info we want is the last element, access with -1
-    func.saveTextToFile(inventoryScript) # Save it to a text file
+    saveTextToFile(inventoryScript) # Save it to a text file
     with open('test.html') as file: # Open the text file
         text = file.read()
     result = text.split('var') # Split the file by 'var', all of our contents will be in the first element
     
     listOfStores = result[1].split('{') # Now we split this var into the list of stores with "{"
     
-    cleanListOfStores = func.cleanStores(listOfStores)
+    cleanListOfStores = cleanStores(listOfStores)
     worksheet.write('A1', 'City')
     worksheet.write('B1', 'Inventory')
     worksheet.write('C1', 'Store ID')
@@ -147,7 +137,6 @@ def saveHTMLToFile(url):
     file.close()
 
 def cleanStores(listOfStores):
-#print(listOfStores)
     cleanedList = []
     for entry in listOfStores:
         newItem = entry.replace("\n", "")
